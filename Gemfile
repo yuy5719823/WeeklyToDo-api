@@ -27,6 +27,8 @@ gem 'rack-cors'
 
 gem 'devise', '~> 4.8'
 gem 'devise_token_auth', '~> 1.1', '>= 1.1.5'
+gem 'devise-i18n'
+gem 'devise-i18n-views'
 
 gem 'dotenv-rails'
 
