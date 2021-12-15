@@ -15,14 +15,14 @@ RSpec.describe "MonthlyGoals", type: :request do
 
   describe "GET /monthly_goals #index" do
     # subject { get monthly_goals_path }
-    context "ログイン済みの場合" do
+    context "ログイン済みのユーザーの場合" do
       it "月の目標を取得できること" do
         get monthly_goals_path, headers: auth_tokens
         expect(response.status).to eq 200
       end
     end
 
-    context "未ログインの場合" do
+    context "未ログインのユーザーの場合" do
       it "月の目標が取得できないこと" do
         get monthly_goals_path
         expect(response.status).to eq 401
@@ -31,16 +31,39 @@ RSpec.describe "MonthlyGoals", type: :request do
   end
 
   describe "POST /monthly_goals #create" do
-    context "ログイン済みの場合" do
+    context "ログイン済みのユーザーの場合" do
       it '月の目標が設定できること' do
+        expect(MonthlyGoal.count).to eq 0
         post monthly_goals_path, headers: auth_tokens, params: { monthly_goal: { goal: goal } }
-        # expect(body["goal"]).to eq goal
+        expect(MonthlyGoal.count).to eq 1
         expect(response.status).to eq 200
       end
     end
-    context "未ログインの場合" do
+    context "未ログインのユーザーの場合" do
       it "月の目標の設定ができないこと" do
+        expect(MonthlyGoal.count).to eq 0
         post monthly_goals_path, headers: not_auth_tokens, params: { monthly_goal: { goal: goal } }
+        expect(MonthlyGoal.count).to eq 0
+        expect(response.status).to eq 401
+      end
+    end
+  end
+
+  describe "DELETE /monthly_goals/:id #destroy" do
+    let!(:monthly_goal) { current_user.monthly_goals.create(goal: "Test MonthlyGoal") }
+    context "ログイン済みのユーザーの場合" do
+      it "月の目標を削除することができる" do
+        expect(MonthlyGoal.count).to eq 1
+        delete monthly_goal_path(monthly_goal.id), headers: auth_tokens
+        expect(MonthlyGoal.count).to eq 0
+        expect(response.status).to eq 200
+      end
+    end
+    context "未ログインのユーザーの場合" do
+      it "月の目標を削除することができない" do
+        expect(MonthlyGoal.count).to eq 1
+        delete monthly_goal_path(monthly_goal.id), headers: not_auth_tokens
+        expect(MonthlyGoal.count).to eq 1
         expect(response.status).to eq 401
       end
     end

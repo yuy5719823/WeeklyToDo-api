@@ -26,11 +26,20 @@ class MonthlyGoalsController < ApplicationController
     end
   end
 
+  def destroy
+    monthly_goal = current_user.monthly_goals.find( params[:id] )
+    if monthly_goal.destroy
+      render status: 200
+    else
+      render status: 500
+    end
+  end
+
   private
 
     def monthly_goal_params
-      # params.permit( :goal )
-      params.require( :monthly_goal ).permit( :goal )
+      params.permit( :goal )
+      # params.require( :monthly_goal ).permit( :goal )
     end
 
 end
