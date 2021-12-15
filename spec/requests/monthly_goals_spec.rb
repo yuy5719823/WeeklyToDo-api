@@ -1,5 +1,4 @@
 require 'rails_helper'
-# include ActionController::RespondWith
 
 RSpec.describe "MonthlyGoals", type: :request do
   let!(:current_user) { FactoryBot.build(:user) }
