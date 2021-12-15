@@ -51,4 +51,22 @@ RSpec.describe "MonthlyMemos", type: :request do
       end
     end
   end
+
+  describe "PATCH /monthly_goal_monthly_memo_path #update" do
+    let!(:memo) { monthly_goal.monthly_memos.create( memo: "testMemo" ) }
+    context "ログイン済みユーザーの場合" do
+      it "メモの変更ができること" do
+        patch monthly_goal_monthly_memo_path(monthly_goal, memo), headers: auth_tokens, params: { monthly_memo: { memo: "update Memo" } }
+        expect(MonthlyMemo.last.memo).not_to eq memo.memo
+        expect(response.status).to eq 200
+      end
+    end
+    context "未ログインユーザーの場合" do
+      it "メモの変更ができないこと" do
+        patch monthly_goal_monthly_memo_path(monthly_goal, memo), headers: not_auth_tokens, params: { monthly_memo: { memo: "update Memo" } }
+        expect(MonthlyMemo.last.memo).to eq memo.memo
+        expect(response.status).to eq 401
+      end
+    end
+  end
 end

@@ -1,5 +1,5 @@
 class MonthlyMemosController < ApplicationController
-  before_action :authenticate_user!, only: [ :create, :destroy ]
+  before_action :authenticate_user!, only: [ :create, :destroy, :update]
 
   def create
     monthly_goal = current_user.monthly_goals.find( params[:monthly_goal_id] )
@@ -15,6 +15,15 @@ class MonthlyMemosController < ApplicationController
     #不必要なSQL文が発行されていないか
     memo = current_user.monthly_goals.find( params[:monthly_goal_id] ).monthly_memos.find( params[:id])
     if memo.destroy
+      render status: 200
+    else
+      render status: 500
+    end
+  end
+
+  def update
+    memo = current_user.monthly_goals.find( params[:monthly_goal_id] ).monthly_memos.find( params[:id])
+    if memo.update( monthly_memo_params )
       render status: 200
     else
       render status: 500
