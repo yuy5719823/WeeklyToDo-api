@@ -31,4 +31,24 @@ RSpec.describe "MonthlyMemos", type: :request do
       end
     end
   end
+
+  describe "DELETE /monthly_goal_monthly_memo_path #destroy" do
+    let!(:memo) { monthly_goal.monthly_memos.create( memo: "testMemo" ) }
+    context "ログイン済みのユーザーの場合" do
+      it "メモを削除できること" do
+        expect(MonthlyMemo.count).to eq 1
+        delete monthly_goal_monthly_memo_path(monthly_goal ,memo), headers: auth_tokens
+        expect(MonthlyMemo.count).to eq 0
+        expect(response.status).to eq 200
+      end
+    end
+    context "未ログインのユーザーの場合" do
+      it "メモを削除できないこと" do
+        expect(MonthlyMemo.count).to eq 1
+        delete monthly_goal_monthly_memo_path(monthly_goal ,memo), headers: not_auth_tokens
+        expect(MonthlyMemo.count).to eq 1
+        expect(response.status).to eq 401
+      end
+    end
+  end
 end

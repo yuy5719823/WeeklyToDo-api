@@ -3,6 +3,6 @@ Rails.application.routes.draw do
     registrations: 'auth/registrations'
   }
   resources :monthly_goals, only: [ :index, :create, :destroy, :update ] do
-    resources :monthly_memos, only: [ :create ]
+    resources :monthly_memos, only: [ :create, :destroy ]
   end
 end
