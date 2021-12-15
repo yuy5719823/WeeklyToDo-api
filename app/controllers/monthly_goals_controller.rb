@@ -1,6 +1,6 @@
 class MonthlyGoalsController < ApplicationController
 
-  before_action :authenticate_user!, only: [ :index, :create, :destroy]
+  before_action :authenticate_user!, only: [ :index, :create, :destroy, :update]
 
   def index
     if monthly_goals = current_user.monthly_goals.all
@@ -35,11 +35,20 @@ class MonthlyGoalsController < ApplicationController
     end
   end
 
+  def update
+    monthly_goal = current_user.monthly_goals.find( params[:id] )
+    if monthly_goal.update( monthly_goal_params )
+      render status: 200, json: monthly_goal
+    else
+      render status: 500
+    end
+  end
+
   private
 
     def monthly_goal_params
-      params.permit( :goal )
-      # params.require( :monthly_goal ).permit( :goal )
+      # params.permit( :goal )
+      params.require( :monthly_goal ).permit( :goal )
     end
 
 end

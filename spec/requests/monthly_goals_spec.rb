@@ -50,7 +50,7 @@ RSpec.describe "MonthlyGoals", type: :request do
   end
 
   describe "DELETE /monthly_goals/:id #destroy" do
-    let!(:monthly_goal) { current_user.monthly_goals.create(goal: "Test MonthlyGoal") }
+    let!(:monthly_goal) { current_user.monthly_goals.create(goal: goal) }
     context "ログイン済みのユーザーの場合" do
       it "月の目標を削除することができる" do
         expect(MonthlyGoal.count).to eq 1
@@ -69,6 +69,22 @@ RSpec.describe "MonthlyGoals", type: :request do
     end
   end
 
-
+  describe "PATCH /monthly_goals/:id #update" do
+    let!(:monthly_goal) { current_user.monthly_goals.create(goal: goal) }
+    context "ログイン済みのユーザーの場合" do
+      it "月の目標を変更することができる" do
+        patch monthly_goal_path(monthly_goal.id), headers: auth_tokens, params: { monthly_goal: { goal: "edit Goal"}}
+        expect(MonthlyGoal.last.goal).not_to eq monthly_goal.goal
+        expect(response.status).to eq 200
+      end
+    end
+    context "未ログインのユーザーの場合" do
+      it "月の目標を変更することができない" do
+        patch monthly_goal_path(monthly_goal.id), headers: not_auth_tokens, params: { monthly_goal: { goal: "edit Goal"}}
+        expect(MonthlyGoal.last.goal).to eq monthly_goal.goal
+        expect(response.status).to eq 401
+      end
+    end
+  end
 
 end
