@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable
   include DeviseTokenAuth::Concerns::User
+  
+  validates :name, presence: true, length: { maximum: 24 }
 
   has_many :monthly_goals
 end
