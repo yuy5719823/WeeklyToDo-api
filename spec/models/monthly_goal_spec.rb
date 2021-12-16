@@ -13,4 +13,15 @@ RSpec.describe MonthlyGoal, type: :model do
       expect(monthly_goal).not_to be_valid 
     end
   end
+
+  describe "関連付けのオプション" do
+    context "月の目標 - メモ" do
+      let!(:monthly_goal) { FactoryBot.create(:monthly_goal) }
+      let!(:monthly_memo) { monthly_goal.monthly_memos.create(memo: "memo Test")}  
+      it "月の目標が削除されたらメモも削除されること" do
+        expect{ monthly_goal.destroy }.to change{ MonthlyMemo.count }.by(-1)
+      end
+    end
+  end
+
 end
