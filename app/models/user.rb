@@ -9,5 +9,5 @@ class User < ActiveRecord::Base
   
   validates :name, presence: true, length: { maximum: 24 }
 
-  has_many :monthly_goals
+  has_many :monthly_goals, dependent: :destroy
 end
