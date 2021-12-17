@@ -1,9 +1,10 @@
 class MonthlyGoalsController < ApplicationController
-
   before_action :authenticate_user!, only: [ :index, :create, :destroy, :update]
 
   def index
-    if monthly_goals = current_user.monthly_goals.all
+    #メインページに表示したいデータ
+    #何月のデータか
+    if monthly_goals = this_month_goals
       monthly_goals_array = monthly_goals.map do | goal |
         {
           id:         goal.id,
@@ -14,11 +15,13 @@ class MonthlyGoalsController < ApplicationController
         }
       end
       render status: 200, json: monthly_goals_array
+    else
+      render status: 202
     end
   end
 
   def create
-    monthly_goal = current_user.monthly_goals.new( monthly_goal_params )
+    monthly_goal = current_user.monthly_goals.build( monthly_goal_params )
     if monthly_goal.save
       render status: 200, json: monthly_goal
     else
@@ -49,6 +52,12 @@ class MonthlyGoalsController < ApplicationController
     def monthly_goal_params
       # params.permit( :goal )
       params.require( :monthly_goal ).permit( :goal )
+    end
+
+    #今月分の月の目標を取得
+    #テスト必要かも？
+    def this_month_goals
+      current_user.monthly_goals.all.where( created_at: Time.now.all_month )
     end
 
 end
