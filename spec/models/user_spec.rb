@@ -24,11 +24,17 @@ RSpec.describe User, type: :model do
   end
 
   describe "関連付けのオプション" do
+    let!(:user) { FactoryBot.create(:user) }
     context "ユーザー - 月の目標" do
-      let!(:user) { FactoryBot.create(:user) }
       let!(:monthly_goal) { user.monthly_goals.create(goal: "goal Test") }
       it "ユーザーが削除されたら月の目標も削除されること" do
         expect{ user.destroy }.to change{ MonthlyGoal.count }.by(-1)
+      end
+    end
+    context "ユーザー - 週の目標" do
+      let!(:weekly_goal) { user.weekly_goals.create(goal: "goal Test") }
+      it "ユーザーが削除されたら週の目標も削除されること" do
+        expect{ user.destroy }.to change{ WeeklyGoal.count }.by(-1)
       end
     end
   end

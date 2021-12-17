@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_08_125811) do
+ActiveRecord::Schema.define(version: 2021_12_17_163751) do
 
   create_table "monthly_goals", force: :cascade do |t|
     t.integer "user_id"
@@ -50,6 +50,15 @@ ActiveRecord::Schema.define(version: 2021_12_08_125811) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  create_table "weekly_goals", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "goal", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_weekly_goals_on_user_id"
+  end
+
   add_foreign_key "monthly_goals", "users"
   add_foreign_key "monthly_memos", "monthly_goals"
+  add_foreign_key "weekly_goals", "users"
 end
