@@ -24,7 +24,7 @@ class WeeklyMemosController < ApplicationController
   private
 
     def weekly_memo_params
-      params.permit( :memo )
-      # params.require( :weekly_memo ).permit( :memo )
+      # params.permit( :memo )
+      params.require( :weekly_memo ).permit( :memo )
     end
 end
