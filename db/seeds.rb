@@ -28,6 +28,9 @@ end
 #週の目標を作成
 3.times do | number |
   weekly_goal = user.weekly_goals.create( goal: "testWeeklyGoal_#{number}")
+  2.times do | number |
+    weekly_goal.weekly_memos.create( memo: "testWeeklyMemo_#{number}")
+  end
 end
 
 
