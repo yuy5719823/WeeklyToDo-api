@@ -14,4 +14,14 @@ RSpec.describe WeeklyGoal, type: :model do
     end
   end
   
+  describe "関連付けのオプション" do
+    context "週の目標 - メモ" do
+      let!(:weekly_goal) { FactoryBot.create(:weekly_goal) }
+      let!(:weekly_memo) { weekly_goal.weekly_memos.create(memo: "memo Test")}  
+      it "週の目標が削除されたらメモも削除されること" do
+        expect{ weekly_goal.destroy }.to change{ WeeklyMemo.count }.by(-1)
+      end
+    end
+  end
+
 end
