@@ -18,7 +18,7 @@ class MonthlyGoalsController < ApplicationController
       monthly_data[:data] = monthly_goals_array
       render status: 200, json: monthly_data
     else
-      render status: 202
+      render status: 500
     end
   end
 
