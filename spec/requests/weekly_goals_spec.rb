@@ -27,4 +27,19 @@ RSpec.describe "WeeklyGoals", type: :request do
       end
     end
   end
+
+  describe "POST 	/weekly_goals #create" do
+    context "ログイン済みのユーザーの場合" do
+      it "週の目標を設定できること" do
+        post weekly_goals_path, headers: auth_tokens, params: { weekly_goal: { goal: goal } }
+        expect(response.status).to eq 200
+      end
+    end
+    context "未ログインのユーザーの場合" do
+      it "週の目標を設定できないこと" do
+        post weekly_goals_path, headers: not_auth_tokens, params: { weekly_goal: { goal: goal } }
+        expect(response.status).to eq 401
+      end
+    end
+  end
 end

@@ -1,5 +1,5 @@
 class WeeklyGoalsController < ApplicationController
-  before_action :authenticate_user!, only: [ :index ]
+  before_action :authenticate_user!, only: [ :index, :create ]
 
   def index
     if weekly_goals = this_week_goals
@@ -21,7 +21,21 @@ class WeeklyGoalsController < ApplicationController
     end
   end
 
+  def create
+    weekly_goal = current_user.weekly_goals.build( weekly_goal_params )
+    if weekly_goal.save
+      render status: 200, json: weekly_goal
+    else
+      render status: 202
+    end
+  end
+
   private
+
+  def weekly_goal_params
+    # params.permit( :goal )
+    params.require( :weekly_goal ).permit( :goal )
+  end
 
     #テスト？
     #月をまたいだ週でもその週を取得
