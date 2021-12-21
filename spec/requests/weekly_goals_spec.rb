@@ -66,4 +66,23 @@ RSpec.describe "WeeklyGoals", type: :request do
       end
     end
   end
+
+  describe "PATCH /weekly_goals/:id #update" do
+    let!(:weekly_goal) { current_user.weekly_goals.create( goal: goal)}
+    context "ログイン済みのユーザーの場合" do
+      it "週の目標を更新できること" do
+        patch weekly_goal_path(weekly_goal), headers: auth_tokens, params: { weekly_goal: { goal: "edit Goal"} }
+        expect(response.status).to eq 200
+        expect(WeeklyGoal.last.goal).not_to eq weekly_goal.goal
+      end
+    end
+    context "未ログインのユーザーの場合" do
+      it "週の目標を更新できないこと" do
+        patch weekly_goal_path(weekly_goal), headers: not_auth_tokens, params: { weekly_goal: { goal: "edit Goal"} }
+        expect(response.status).to eq 401
+        expect(WeeklyGoal.last.goal).to eq weekly_goal.goal
+      end
+    end
+    
+  end
 end
