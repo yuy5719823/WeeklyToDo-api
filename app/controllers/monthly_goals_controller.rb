@@ -5,6 +5,7 @@ class MonthlyGoalsController < ApplicationController
     #メインページに表示したいデータ
     #何月のデータか
     if monthly_goals = this_month_goals
+      monthly_data = { info: Time.now.month }
       monthly_goals_array = monthly_goals.map do | goal |
         {
           id:         goal.id,
@@ -14,7 +15,8 @@ class MonthlyGoalsController < ApplicationController
           memo:       goal.monthly_memos,
         }
       end
-      render status: 200, json: monthly_goals_array
+      monthly_data[:data] = monthly_goals_array
+      render status: 200, json: monthly_data
     else
       render status: 202
     end
