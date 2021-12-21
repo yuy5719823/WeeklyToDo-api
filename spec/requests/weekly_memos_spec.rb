@@ -12,7 +12,7 @@ RSpec.describe "WeeklyMemos", type: :request do
     current_user.save
   end
 
-  describe "CREATE /weekly_goals/:weekly_goal_id/weekly_memos #create" do
+  describe "POST /weekly_goals/:weekly_goal_id/weekly_memos #create" do
     context "ログイン済みのユーザーの場合" do
       it "メモを追加できること" do
         expect(WeeklyMemo.count).to eq 0
@@ -25,6 +25,24 @@ RSpec.describe "WeeklyMemos", type: :request do
         expect(WeeklyMemo.count).to eq 0
         post weekly_goal_weekly_memos_path(weekly_goal), headers: not_auth_tokens, params: { weekly_memo: { memo: "testMemo"} }
         expect(WeeklyMemo.count).to eq 0
+      end
+    end
+  end
+
+  describe "DELETE	/weekly_goals/:weekly_goal_id/weekly_memos/:id #destroy" do
+    let!(:weekly_memo) { weekly_goal.weekly_memos.create( memo: "testMemo" ) }
+    context "ログイン済みユーザーの場合" do
+      it "メモの削除ができること" do
+        expect(WeeklyMemo.count).to eq 1
+        delete weekly_goal_weekly_memo_path(weekly_goal, weekly_memo), headers: auth_tokens
+        expect(WeeklyMemo.count).to eq 0
+      end
+    end
+    context "未ログインのユーザーの場合" do 
+      it "メモの削除ができないこと" do
+        expect(WeeklyMemo.count).to eq 1
+        delete weekly_goal_weekly_memo_path(weekly_goal, weekly_memo), headers: not_auth_tokens
+        expect(WeeklyMemo.count).to eq 1
       end
     end
   end

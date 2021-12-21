@@ -6,6 +6,6 @@ Rails.application.routes.draw do
     resources :monthly_memos, only: [ :create, :destroy, :update ]
   end
   resources :weekly_goals, only: [ :index, :create, :destroy, :update ] do
-    resources :weekly_memos, only: [ :create ]
+    resources :weekly_memos, only: [ :create, :destroy ]
   end
 end
