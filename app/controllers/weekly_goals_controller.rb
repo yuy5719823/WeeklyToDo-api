@@ -1,5 +1,5 @@
 class WeeklyGoalsController < ApplicationController
-  before_action :authenticate_user!, only: [ :index, :create ]
+  before_action :authenticate_user!, only: [ :index, :create, :destroy ]
 
   def index
     if weekly_goals = this_week_goals
@@ -17,7 +17,7 @@ class WeeklyGoalsController < ApplicationController
       weekly_data[:data] = weekly_goals_array
       render status: 200, json: weekly_data
     else
-      render status: 202
+      render status: 500
     end
   end
 
@@ -26,7 +26,16 @@ class WeeklyGoalsController < ApplicationController
     if weekly_goal.save
       render status: 200, json: weekly_goal
     else
-      render status: 202
+      render status: 500
+    end
+  end
+
+  def destroy
+    weekly_goal = current_user.weekly_goals.find( params[:id] )
+    if weekly_goal.destroy
+      render status: 200
+    else
+      render status: 500
     end
   end
 

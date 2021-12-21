@@ -31,14 +31,38 @@ RSpec.describe "WeeklyGoals", type: :request do
   describe "POST 	/weekly_goals #create" do
     context "ログイン済みのユーザーの場合" do
       it "週の目標を設定できること" do
+        expect(WeeklyGoal.count).to eq 0
         post weekly_goals_path, headers: auth_tokens, params: { weekly_goal: { goal: goal } }
         expect(response.status).to eq 200
+        expect(WeeklyGoal.count).to eq 1
       end
     end
     context "未ログインのユーザーの場合" do
       it "週の目標を設定できないこと" do
+        expect(WeeklyGoal.count).to eq 0
         post weekly_goals_path, headers: not_auth_tokens, params: { weekly_goal: { goal: goal } }
         expect(response.status).to eq 401
+        expect(WeeklyGoal.count).to eq 0
+      end
+    end
+  end
+  
+  describe "DELETE /weekly_goals/:id #destroy" do
+    let!(:weekly_goal) { current_user.weekly_goals.create( goal: goal)}
+    context "ログイン済みのユーザーの場合" do
+      it "週の目標を削除できること" do
+        expect(WeeklyGoal.count).to eq 1
+        delete weekly_goal_path(weekly_goal), headers: auth_tokens
+        expect(response.status).to eq 200
+        expect(WeeklyGoal.count).to eq 0
+      end
+    end
+    context "未ログインのユーザーの場合" do
+      it "週の目標を削除できないこと" do
+        expect(WeeklyGoal.count).to eq 1
+        delete weekly_goal_path(weekly_goal), headers: not_auth_tokens
+        expect(response.status).to eq 401
+        expect(WeeklyGoal.count).to eq 1
       end
     end
   end
