@@ -22,6 +22,13 @@ RSpec.describe WeeklyGoal, type: :model do
         expect{ weekly_goal.destroy }.to change{ WeeklyMemo.count }.by(-1)
       end
     end
+    context "週の目標 - ToDo" do
+      let!(:weekly_goal) { FactoryBot.create(:weekly_goal) }
+      let!(:to_do)       { weekly_goal.to_dos.create(goal: "toDo Test")}
+      it "週の目標が削除されたらToDoも削除されること" do
+        expect{ to_do.destroy }.to change{ ToDo.count }.by(-1)
+      end
+    end
   end
 
 end
