@@ -46,4 +46,20 @@ RSpec.describe "WeeklyMemos", type: :request do
       end
     end
   end
+
+  describe "PATCH	/weekly_goals/:weekly_goal_id/weekly_memos/:id #update" do
+    let!(:weekly_memo) { weekly_goal.weekly_memos.create( memo: "testMemo" ) }
+    context "ログイン済みのユーザーの場合" do
+      it "メモの編集ができること" do
+        patch weekly_goal_weekly_memo_path(weekly_goal, weekly_memo), headers: auth_tokens, params: { weekly_memo: { memo: "update Memo" } }
+        expect(WeeklyMemo.last.memo).not_to eq weekly_memo.memo
+      end
+    end
+    context "未ログインのユーザーの場合" do
+      it "メモの編集ができないこと" do
+        patch weekly_goal_weekly_memo_path(weekly_goal, weekly_memo), headers: not_auth_tokens, params: { weekly_memo: { memo: "update Memo" } }
+        expect(WeeklyMemo.last.memo).to eq weekly_memo.memo
+      end
+    end
+  end
 end
