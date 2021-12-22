@@ -31,6 +31,10 @@ end
   2.times do | number |
     weekly_goal.weekly_memos.create( memo: "testWeeklyMemo_#{number}")
   end
+  #ToDoを作成
+  3.times do | number |
+    weekly_goal.to_dos.create( goal: "toDo_#{number}" )
+  end
 end
 
 
