@@ -1,5 +1,5 @@
 class WeeklyMemosController < ApplicationController
-  before_action :authenticate_user!, only: [ :create, :destroy ]
+  before_action :authenticate_user!, only: [ :create, :destroy, :update ]
 
   def create
     weekly_goal = current_user.weekly_goals.find( params[:weekly_goal_id] )
@@ -18,6 +18,16 @@ class WeeklyMemosController < ApplicationController
       render status: 200
     else
       render statu: 500
+    end
+  end
+
+  def update
+    weekly_goal = current_user.weekly_goals.find( params[ :weekly_goal_id] )
+    memo = weekly_goal.weekly_memos.find( params[:id] )
+    if memo.update( weekly_memo_params )
+      render status: 200
+    else
+      render status: 500
     end
   end
 
