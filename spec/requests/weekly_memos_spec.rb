@@ -18,6 +18,7 @@ RSpec.describe "WeeklyMemos", type: :request do
         expect(WeeklyMemo.count).to eq 0
         post weekly_goal_weekly_memos_path(weekly_goal), headers: auth_tokens, params: { weekly_memo: { memo: "testMemo"} }
         expect(WeeklyMemo.count).to eq 1
+        expect(response.status).to eq 200
       end
     end
     context "未ログインのユーザーの場合" do
@@ -25,6 +26,7 @@ RSpec.describe "WeeklyMemos", type: :request do
         expect(WeeklyMemo.count).to eq 0
         post weekly_goal_weekly_memos_path(weekly_goal), headers: not_auth_tokens, params: { weekly_memo: { memo: "testMemo"} }
         expect(WeeklyMemo.count).to eq 0
+        expect(response.status).to eq 401
       end
     end
   end
@@ -36,6 +38,7 @@ RSpec.describe "WeeklyMemos", type: :request do
         expect(WeeklyMemo.count).to eq 1
         delete weekly_goal_weekly_memo_path(weekly_goal, weekly_memo), headers: auth_tokens
         expect(WeeklyMemo.count).to eq 0
+        expect(response.status).to eq 200
       end
     end
     context "未ログインのユーザーの場合" do 
@@ -43,6 +46,7 @@ RSpec.describe "WeeklyMemos", type: :request do
         expect(WeeklyMemo.count).to eq 1
         delete weekly_goal_weekly_memo_path(weekly_goal, weekly_memo), headers: not_auth_tokens
         expect(WeeklyMemo.count).to eq 1
+        expect(response.status).to eq 401
       end
     end
   end
@@ -53,12 +57,14 @@ RSpec.describe "WeeklyMemos", type: :request do
       it "メモの編集ができること" do
         patch weekly_goal_weekly_memo_path(weekly_goal, weekly_memo), headers: auth_tokens, params: { weekly_memo: { memo: "update Memo" } }
         expect(WeeklyMemo.last.memo).not_to eq weekly_memo.memo
+        expect(response.status).to eq 200
       end
     end
     context "未ログインのユーザーの場合" do
       it "メモの編集ができないこと" do
         patch weekly_goal_weekly_memo_path(weekly_goal, weekly_memo), headers: not_auth_tokens, params: { weekly_memo: { memo: "update Memo" } }
         expect(WeeklyMemo.last.memo).to eq weekly_memo.memo
+        expect(response.status).to eq 401
       end
     end
   end
