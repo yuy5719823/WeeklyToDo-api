@@ -1,5 +1,5 @@
 class ToDosController < ApplicationController
-  before_action :authenticate_user!, only: [ :create ]
+  before_action :authenticate_user!, only: [ :create, :destroy ]
 
   def create
     weekly_goal = current_user.weekly_goals.find( params[:weekly_goal_id] )
@@ -7,6 +7,16 @@ class ToDosController < ApplicationController
     if todo.save
       render status: 200, json: todo
     else
+      render status: 500
+    end
+  end
+
+  def destroy
+    weekly_goal = current_user.weekly_goals.find( params[:weekly_goal_id] )
+    todo = weekly_goal.to_dos.find( params[:id] )
+    if todo.destroy
+      render status: 200, json: todo
+    else 
       render status: 500
     end
   end

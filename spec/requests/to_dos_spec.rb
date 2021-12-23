@@ -18,6 +18,7 @@ RSpec.describe "ToDos", type: :request do
         expect(ToDo.count).to eq 0
         post weekly_goal_to_dos_path(weekly_goal), headers: auth_tokens, params: { todo: { goal: "todo Test" } }
         expect(ToDo.count).to eq 1
+        expect(response.status).to eq 200
       end
     end
     context "未ログインのユーザーの場合" do
@@ -25,6 +26,27 @@ RSpec.describe "ToDos", type: :request do
         expect(ToDo.count).to eq 0
         post weekly_goal_to_dos_path(weekly_goal), headers: not_auth_tokens, params: { todo: { goal: "todo Test" } }
         expect(ToDo.count).to eq 0
+        expect(response.status).to eq 401
+      end
+    end
+  end
+  
+  describe "DELETE /weekly_goals/:weekly_goal_id/to_dos/:id #destroy" do
+    let!(:to_do) { weekly_goal.to_dos.create( goal: "todo Test" ) }
+    context "ログイン済みのユーザーの場合" do
+      it "ToDoが削除できること" do
+        expect(ToDo.count).to eq 1
+        delete weekly_goal_to_do_path(weekly_goal, to_do), headers: auth_tokens
+        expect(ToDo.count).to eq 0
+        expect(response.status).to eq 200
+      end
+    end
+    context "未ログインのユーザーの場合" do
+      it "ToDoが削除できないこと" do
+        expect(ToDo.count).to eq 1
+        delete weekly_goal_to_do_path(weekly_goal, to_do), headers: not_auth_tokens
+        expect(ToDo.count).to eq 1
+        expect(response.status).to eq 401
       end
     end
   end
