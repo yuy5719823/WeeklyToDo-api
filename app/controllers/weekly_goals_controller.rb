@@ -12,7 +12,8 @@ class WeeklyGoalsController < ApplicationController
           goal: goal.goal,
           created_at: goal.created_at,
           updated_at: goal.updated_at,
-          memo:       goal.weekly_memos,
+          memos:       goal.weekly_memos,
+          todos:       goal.to_dos,
         }
       end
       weekly_data[:data] = weekly_goals_array
