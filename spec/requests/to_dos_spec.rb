@@ -50,4 +50,23 @@ RSpec.describe "ToDos", type: :request do
       end
     end
   end
+
+  describe "PATCH /weekly_goals/:weekly_goal_id/to_dos/:id #update" do
+    let!(:to_do) { weekly_goal.to_dos.create( goal: "todo Test" ) }
+    context "ログイン済みのユーザーの場合" do
+      it "ToDoの目標、完了フラグが更新ができること" do
+        patch weekly_goal_to_do_path(weekly_goal, to_do), headers: auth_tokens, params: { todo: { goal: "edit Test", complete_flag: !to_do.complete_flag } }
+        expect(ToDo.last.goal).not_to eq to_do.goal
+        expect(ToDo.last.complete_flag).not_to eq to_do.complete_flag
+      end
+    end
+    context "未ログインのユーザーの場合" do
+      it "ToDo更新ができないこと" do
+        patch weekly_goal_to_do_path(weekly_goal, to_do), headers: not_auth_tokens, params: { todo: { goal: "edit Test", complete_flag: !to_do.complete_flag } }
+        expect(ToDo.last.goal).to eq to_do.goal
+        expect(ToDo.last.complete_flag).to eq to_do.complete_flag
+      end
+    end
+  end
+
 end
