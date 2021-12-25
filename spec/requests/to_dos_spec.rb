@@ -58,6 +58,7 @@ RSpec.describe "ToDos", type: :request do
         patch weekly_goal_to_do_path(weekly_goal, to_do), headers: auth_tokens, params: { todo: { goal: "edit Test", complete_flag: !to_do.complete_flag } }
         expect(ToDo.last.goal).not_to eq to_do.goal
         expect(ToDo.last.complete_flag).not_to eq to_do.complete_flag
+        expect(response.status).to eq 200
       end
     end
     context "未ログインのユーザーの場合" do
@@ -65,6 +66,27 @@ RSpec.describe "ToDos", type: :request do
         patch weekly_goal_to_do_path(weekly_goal, to_do), headers: not_auth_tokens, params: { todo: { goal: "edit Test", complete_flag: !to_do.complete_flag } }
         expect(ToDo.last.goal).to eq to_do.goal
         expect(ToDo.last.complete_flag).to eq to_do.complete_flag
+        expect(response.status).to eq 401
+      end
+    end
+  end
+
+  describe "patch /weekly_goals/:weekly_goal_id/to_dos/:to_do_id/flag #update_flag" do
+    let!(:to_do) { weekly_goal.to_dos.create( goal: "todo Test" ) }
+    context "ログイン済みのユーザーの場合" do
+      it "完了フラグを更新できること" do
+        expect(to_do.complete?).to be_falsey
+        patch weekly_goal_to_do_flag_path(weekly_goal, to_do), headers: auth_tokens
+        expect(ToDo.last.complete?).to be_truthy
+        expect(response.status).to eq 200
+      end
+    end
+    context "未ログインのユーザーの場合" do
+      it "完了フラグを更新できないこと" do
+        expect(to_do.complete?).to be_falsey
+        patch weekly_goal_to_do_flag_path(weekly_goal, to_do), headers: not_auth_tokens
+        expect(ToDo.last.complete?).not_to be_truthy
+        expect(response.status).to eq 401
       end
     end
   end

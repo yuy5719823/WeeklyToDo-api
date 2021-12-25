@@ -7,6 +7,10 @@ Rails.application.routes.draw do
   end
   resources :weekly_goals, only: [ :index, :create, :destroy, :update ] do
     resources :weekly_memos,  only: [ :create, :destroy, :update ]
-    resources :to_dos,        only: [ :create, :destroy, :update ]
+    resources :to_dos,        only: [ :create, :destroy, :update ] do
+      patch "/flag", to: "to_dos#update_flag" #完了フラグの更新
+    end
   end
+
+
 end

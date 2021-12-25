@@ -1,5 +1,5 @@
 class ToDosController < ApplicationController
-  before_action :authenticate_user!, only: [ :create, :destroy, :update ]
+  before_action :authenticate_user!, only: [ :create, :destroy, :update, :update_flag ]
 
   def create
     weekly_goal = current_user.weekly_goals.find( params[:weekly_goal_id] )
@@ -30,6 +30,26 @@ class ToDosController < ApplicationController
       render status: 200
     else
       render status: 500
+    end
+  end
+
+  # 完了フラグのみ更新
+  def update_flag
+    weekly_goal = current_user.weekly_goals.find( params[:weekly_goal_id] )
+    todo = weekly_goal.to_dos.find( params[:to_do_id] )
+    # 完了済みなら未完了へ,未完了なら完了済みへ
+    if todo.complete?
+      if todo.update( complete_flag: false )
+        render status: 200, json: todo
+      else
+        render status: 500
+      end
+    else
+      if todo.update( complete_flag: true )
+        render status: 200, json: todo
+      else
+        render status: 500
+      end
     end
   end
 
