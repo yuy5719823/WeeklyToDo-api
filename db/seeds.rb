@@ -36,6 +36,9 @@ end
     weekly_goal.to_dos.create( goal: "toDo_#{number}" )
   end
 end
-
+#タグを作成
+2.times do | number | 
+  user.tags.create( tag_name: "tag_#{number}" )
+end
 
 puts "テストデータの作成完了"
