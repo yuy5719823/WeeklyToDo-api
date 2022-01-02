@@ -25,6 +25,11 @@ user.save
     monthlyGoal.monthly_memos.create( memo: "testMonthlyMemo_#{number}" )
   end
 end
+
+#タグを作成
+2.times do | number | 
+  user.tags.create( tag_name: "tag_#{number}" )
+end
 #週の目標を作成
 3.times do | number |
   weekly_goal = user.weekly_goals.create( goal: "testWeeklyGoal_#{number}")
@@ -35,10 +40,8 @@ end
   3.times do | number |
     weekly_goal.to_dos.create( goal: "toDo_#{number}" )
   end
-end
-#タグを作成
-2.times do | number | 
-  user.tags.create( tag_name: "tag_#{number}" )
+  #週の目標にタグを付与
+  WeeklyGoalTag.create(weekly_goal: weekly_goal, tag: Tag.first )
 end
 
 puts "テストデータの作成完了"
