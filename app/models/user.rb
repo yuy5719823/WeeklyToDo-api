@@ -11,4 +11,5 @@ class User < ActiveRecord::Base
 
   has_many :monthly_goals, dependent: :destroy
   has_many :weekly_goals, dependent: :destroy
+  has_many :tags, dependent: :destroy
 end
