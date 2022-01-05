@@ -4,7 +4,7 @@ RSpec.describe User, type: :model do
 
   let(:user) { FactoryBot.build(:user) }
 
-  describe 'validation' do
+  describe 'validations' do
     context "受け取ったユーザー情報が有効な場合" do
       it "name(24文字以内)、emailが存在、password、password_confirmationが一致すればユーザーの登録ができること" do
         expect(user).to be_valid
@@ -23,7 +23,11 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "association" do
+  describe "associations" do
+    it { should have_many(:monthly_goals) }
+    it { should have_many(:weekly_goals) }
+    it { should have_many(:tags)}
+
     let!(:user) { FactoryBot.create(:user) }
     context "ユーザー - 月の目標" do
       let!(:monthly_goal) { user.monthly_goals.create(goal: "goal Test") }

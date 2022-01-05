@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe ToDo, type: :model do
   let(:to_do) { FactoryBot.build(:to_do) }
-  describe "validation" do
+  describe "validations" do
     context "goal" do
       it "目標が必須であること" do
         to_do.goal = ""
@@ -26,6 +26,10 @@ RSpec.describe ToDo, type: :model do
     it "ToDoの完了フラグの初期値がfalseであること" do
       expect(to_do.complete_flag).to be_falsey
     end
+  end
+
+  describe "associations" do
+    it { should belong_to(:weekly_goal) }
   end
   
 end
