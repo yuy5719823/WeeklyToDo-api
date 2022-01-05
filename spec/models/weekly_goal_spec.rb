@@ -37,7 +37,7 @@ RSpec.describe WeeklyGoal, type: :model do
     context "週の目標 - WeeklyGoalTag" do
       let(:user) { create(:user) }
       let(:weekly_goal) { user.weekly_goals.create(goal: "goalTest") }
-      let(:tag) { user.tags.create(tag_name: "testTag") }
+      let(:tag) { user.tags.create(name: "testTag") }
       let!(:goal_tag) { create(:weekly_goal_tag, weekly_goal: weekly_goal, tag: tag) }
       it "週の目標が削除されたらタグの関連も削除されること" do
         expect{ goal_tag.destroy }.to change{ WeeklyGoalTag.count }.by(-1)

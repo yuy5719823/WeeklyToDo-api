@@ -30,7 +30,7 @@ ActiveRecord::Schema.define(version: 2022_01_02_141953) do
 
   create_table "tags", force: :cascade do |t|
     t.integer "user_id"
-    t.string "tag_name", null: false
+    t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_tags_on_user_id"

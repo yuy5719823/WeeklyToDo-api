@@ -42,7 +42,7 @@ RSpec.describe User, type: :model do
       end
     end
     context "ユーザー - タグ" do
-      let!(:tag) { user.tags.create( tag_name: "tagTest") }
+      let!(:tag) { user.tags.create( name: "tagTest") }
       it "ユーザーが削除されたらタグも削除されること" do
         expect{ user.destroy }.to change{ Tag.count }.by(-1)
       end

@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe WeeklyGoalTag, type: :model do
   let!(:user) { create(:user) }
   let(:weekly_goal) { user.weekly_goals.create(goal: "weeklyGoalTest") }
-  let(:tag) { user.tags.create(tag_name: "tagTest") }
+  let(:tag) { user.tags.create(name: "tagTest") }
   let(:goal_tag) { build(:weekly_goal_tag, weekly_goal: weekly_goal, tag: tag) }
 
   describe "validations" do
