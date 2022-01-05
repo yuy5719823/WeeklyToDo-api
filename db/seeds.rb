@@ -28,7 +28,7 @@ end
 
 #タグを作成
 2.times do | number | 
-  user.tags.create( tag_name: "tag_#{number}" )
+  user.tags.create( name: "tag_#{number}" )
 end
 #週の目標を作成
 3.times do | number |
