@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_25_081441) do
+ActiveRecord::Schema.define(version: 2022_01_02_141953) do
 
   create_table "monthly_goals", force: :cascade do |t|
     t.integer "user_id"
@@ -65,6 +65,16 @@ ActiveRecord::Schema.define(version: 2021_12_25_081441) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
+  end
+
+  create_table "weekly_goal_tags", force: :cascade do |t|
+    t.integer "weekly_goal_id", null: false
+    t.integer "tag_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["tag_id"], name: "index_weekly_goal_tags_on_tag_id"
+    t.index ["weekly_goal_id", "tag_id"], name: "index_weekly_goal_tags_on_weekly_goal_id_and_tag_id", unique: true
+    t.index ["weekly_goal_id"], name: "index_weekly_goal_tags_on_weekly_goal_id"
   end
 
   create_table "weekly_goals", force: :cascade do |t|
