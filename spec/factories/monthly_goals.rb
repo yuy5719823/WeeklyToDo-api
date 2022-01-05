@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :monthly_goal do
-    association :user, factory: :user
+    association :user
     goal        { "Test MonthlyGooal" }
   end
 end
