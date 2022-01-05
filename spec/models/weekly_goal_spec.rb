@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe WeeklyGoal, type: :model do
 
-  describe "バリデーション" do
+  describe "validation" do
     let(:weekly_goal) { FactoryBot.build(:weekly_goal) }
     it "週の目標が必須であること" do
       weekly_goal.goal = ""
@@ -14,7 +14,7 @@ RSpec.describe WeeklyGoal, type: :model do
     end
   end
   
-  describe "関連付けのオプション" do
+  describe "association" do
     context "週の目標 - メモ" do
       let!(:weekly_goal) { FactoryBot.create(:weekly_goal) }
       let!(:weekly_memo) { weekly_goal.weekly_memos.create(memo: "memo Test")}  

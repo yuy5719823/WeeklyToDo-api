@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe MonthlyMemo, type: :model do
-  describe 'バリデーション' do
+  describe 'validation' do
     let(:monthly_memo) { FactoryBot.build(:monthly_memo) }
     it 'メモの空文字は無効であること' do
       monthly_memo.memo = ""

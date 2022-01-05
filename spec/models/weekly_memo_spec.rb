@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe WeeklyMemo, type: :model do
 
-  describe "バリデーション" do
+  describe "validation" do
     let(:weekly_memo) { FactoryBot.build(:weekly_memo) }
     it "メモの空白は無効であること" do
       weekly_memo.memo = ""

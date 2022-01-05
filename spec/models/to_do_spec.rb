@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe ToDo, type: :model do
   let(:to_do) { FactoryBot.build(:to_do) }
-  describe "バリデーション" do
+  describe "validation" do
     context "goal" do
       it "目標が必須であること" do
         to_do.goal = ""
@@ -22,7 +22,7 @@ RSpec.describe ToDo, type: :model do
     end
   end
 
-  describe "初期設定" do
+  describe "init" do
     it "ToDoの完了フラグの初期値がfalseであること" do
       expect(to_do.complete_flag).to be_falsey
     end

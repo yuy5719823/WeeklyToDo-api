@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe MonthlyGoal, type: :model do
   
-  describe 'バリデーション' do
+  describe 'validation' do
     let(:monthly_goal) { FactoryBot.build( :monthly_goal ) }
     it '月の目標のタイトルが空文字は無効であること' do
       monthly_goal.goal = ""
@@ -14,7 +14,7 @@ RSpec.describe MonthlyGoal, type: :model do
     end
   end
 
-  describe "関連付けのオプション" do
+  describe "association" do
     context "月の目標 - メモ" do
       let!(:monthly_goal) { FactoryBot.create(:monthly_goal) }
       let!(:monthly_memo) { monthly_goal.monthly_memos.create(memo: "memo Test")}  

@@ -5,7 +5,7 @@ RSpec.describe Tag, type: :model do
   let!(:user_tag) { user.tags.create(tag_name: tag.tag_name) }
   let(:tag) { user.tags.build(tag_name: "tagTest") }
 
-  describe "バリデーション" do
+  describe "validation" do
     context "tag_name" do
       it "タグ名の空文字は無効であること" do
         tag.tag_name = ""
