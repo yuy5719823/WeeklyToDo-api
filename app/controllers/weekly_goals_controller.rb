@@ -23,6 +23,7 @@ class WeeklyGoalsController < ApplicationController
     end
   end
 
+  #　週の目標作成時にタグIdを受け取った場合、同時に紐付ける
   def create
     weekly_goal = current_user.weekly_goals.build( weekly_goal_params )
     if weekly_goal.save
