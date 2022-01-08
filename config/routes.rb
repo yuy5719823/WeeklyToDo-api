@@ -10,7 +10,9 @@ Rails.application.routes.draw do
     resources :to_dos,        only: [ :create, :destroy, :update ] do
       patch "/flag", to: "to_dos#update_flag" #完了フラグの更新
     end
+    # resources :tags, only: [ :create ]
   end
+  resources :tags, only: [ :index, :create, :destroy, :update ]
 
 
 end
